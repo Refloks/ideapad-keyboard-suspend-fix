@@ -1,0 +1,11 @@
+[Unit]
+Description=Lid close watcher
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/lid-watch.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
