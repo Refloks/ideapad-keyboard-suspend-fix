@@ -1,20 +1,20 @@
 #!/bin/sh
 set -e
 
-echo "Installing ideapad-keyboard-suspend-fix..."
-
-cp fix-keyboard.sh /usr/local/bin/fix-keyboard.sh
-chmod +x /usr/local/bin/fix-keyboard.sh
-
-cp fix-keyboard.service /etc/systemd/system/fix-keyboard.service
+cp fix-keyboard.sh /usr/lib/systemd/system-sleep/fix-keyboard
+chmod +x /usr/lib/systemd/system-sleep/fix-keyboard
 
 cp lid-watch.sh /usr/local/bin/lid-watch.sh
 chmod +x /usr/local/bin/lid-watch.sh
-
 cp lid-watch.service /etc/systemd/system/lid-watch.service
-
 systemctl daemon-reload
-systemctl enable --now fix-keyboard.service
 systemctl enable --now lid-watch.service
 
-echo "Done. Test by suspending your laptop."
+# Remove old fix-keyboard.service if present from a previous install
+if systemctl is-enabled fix-keyboard.service 2>/dev/null; then
+    systemctl disable --now fix-keyboard.service
+    rm -f /etc/systemd/system/fix-keyboard.service
+    systemctl daemon-reload
+fi
+
+echo "Done."

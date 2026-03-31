@@ -1,4 +1,6 @@
 #!/bin/sh
-echo i8042 > /sys/bus/platform/drivers/i8042/unbind
-echo i8042 > /sys/bus/platform/drivers/i8042/bind
-echo serio1 > /sys/bus/serio/drivers/atkbd/unbind
+if [ "$1" = "post" ]; then
+    echo i8042 > /sys/bus/platform/drivers/i8042/unbind
+    sleep 0.5
+    echo i8042 > /sys/bus/platform/drivers/i8042/bind
+fi
